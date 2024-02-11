@@ -9,10 +9,12 @@
 <body>
 
     <!-- Your content goes here -->
-    <form action="/" method="POST">
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
         <label for="photo">Choose a photo</label>
         <input type="file" name="photo" accept="image/png, image/jpeg" />
         <textarea name="caption"></textarea>
+        <input type="submit" value="Post" />
     </form>
     <a href="">Home</a>
     <!-- Add your JavaScript scripts or external script links here -->

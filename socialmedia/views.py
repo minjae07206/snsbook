@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from .models import CustomUser, Post
+
 
 # Create your views here.
 
@@ -6,6 +8,13 @@ def index(request):
     return render(request, "index.html")
 
 def create(request):
+    if request.method == "POST":
+        user = request.user.username
+        image = request.FILES.get("photo")
+        caption = request.POST['caption']
+        new_post = Post.objects.create(user=user, image=image, caption=caption)
+        new_post.save()
+        return redirect('/')
     return render(request, 'create.html')
 
 def search(request):
