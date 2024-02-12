@@ -5,7 +5,9 @@ from .models import CustomUser, Post
 # Create your views here.
 
 def index(request):
-    return render(request, "index.html")
+    all_posts = Post.objects.all()
+    
+    return render(request, "index.html", {"all_posts": all_posts})
 
 def create(request):
     if request.method == "POST":
