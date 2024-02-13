@@ -1,9 +1,17 @@
 from django.shortcuts import render, redirect
 from .models import CustomUser, Post
+from django.contrib.auth.decorators import login_required
+
 
 
 # Create your views here.
 
+def login(request):
+    if request.method == "POST":
+        print("POST METHOD")
+    return render(request, 'login.html')
+
+@login_required(login_url='login')
 def index(request):
     all_posts = Post.objects.all()
     
