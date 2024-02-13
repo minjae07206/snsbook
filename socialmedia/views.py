@@ -20,6 +20,11 @@ def create(request):
     return render(request, 'create.html')
 
 def search(request):
+    if request.method == "POST":
+        searched_posts = Post.objects.filter(caption__icontains=request.POST["search"])
+        searched_posts = list(searched_posts)
+        print(searched_posts)
+        return render(request, 'search.html', {'searched_posts': searched_posts})
     return render(request, 'index.html')
 
 def settings(request):
