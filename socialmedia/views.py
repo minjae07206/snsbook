@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import CustomUser, Post
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 
 
@@ -39,12 +39,18 @@ def signup(request):
             return redirect('login')
     return render(request, 'signup.html')
 
-@login_required(login_url="/login/")
+def signout(request):
+    if request.method == "POST":
+        logout(request)
+        return redirect('signin')
+
+@login_required(login_url="signin")
 def index(request):
     all_posts = Post.objects.all()
     
     return render(request, "index.html", {"all_posts": all_posts})
 
+@login_required(login_url="signin")
 def create(request):
     if request.method == "POST":
         user = request.user.username
@@ -55,6 +61,7 @@ def create(request):
         return redirect('/')
     return render(request, 'create.html')
 
+@login_required(login_url="signin")
 def search(request):
     if request.method == "POST":
         searched_posts = Post.objects.filter(caption__icontains=request.POST["search"])
@@ -63,5 +70,6 @@ def search(request):
         return render(request, 'search.html', {'searched_posts': searched_posts})
     return render(request, 'index.html')
 
+@login_required(login_url="signin")
 def settings(request):
     return render(request, 'settings.html')
