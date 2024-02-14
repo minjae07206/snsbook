@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import CustomUser, Post
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User, auth
 
 
 
@@ -9,10 +11,22 @@ from django.contrib.auth.decorators import login_required
 def login(request):
     if request.method == "POST":
         email = request.POST["email"]
+        password = request.POST["password"]
         print(email)
     return render(request, 'login.html')
 
-@login_required(login_url='login')
+def signup(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        email = request.POST["email"]
+        password = request.POST["password"]
+        password2 = request.POST["password2"]
+        if password != password2:
+            messages.error(request, "Passwords do not match.")
+            return redirect('signup')
+        
+    return render(request, 'signup.html')
+
 def index(request):
     all_posts = Post.objects.all()
     
