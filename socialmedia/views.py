@@ -2,18 +2,21 @@ from django.shortcuts import render, redirect
 from .models import CustomUser, Post
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User, auth
+from django.contrib.auth import authenticate, login
 
 
 
 # Create your views here.
 
-def login(request):
+def signin(request):
     if request.method == "POST":
-        email = request.POST["email"]
+        username = request.POST["username"]
         password = request.POST["password"]
-        print(email)
-    return render(request, 'login.html')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+    return render(request, 'signin.html')
 
 def signup(request):
     if request.method == "POST":
@@ -24,9 +27,19 @@ def signup(request):
         if password != password2:
             messages.error(request, "Passwords do not match.")
             return redirect('signup')
-        
+        elif CustomUser.objects.filter(email=email).exists():
+            messages.error(request, "Account with the email already exists")
+            return redirect('signup')
+        elif CustomUser.objects.filter(username=username).exists():
+            messages.error(request, "Username is already taken")
+            return redirect('signup')
+        else:
+            new_user = CustomUser.objects.create_user(username=username, password=password, email=email)
+            new_user.save()
+            return redirect('login')
     return render(request, 'signup.html')
 
+@login_required(login_url="/login/")
 def index(request):
     all_posts = Post.objects.all()
     
