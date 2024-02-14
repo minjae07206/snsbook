@@ -8,7 +8,8 @@ from django.contrib.auth.decorators import login_required
 
 def login(request):
     if request.method == "POST":
-        print("POST METHOD")
+        email = request.POST["email"]
+        print(email)
     return render(request, 'login.html')
 
 @login_required(login_url='login')
