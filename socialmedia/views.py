@@ -16,6 +16,8 @@ def signin(request):
         if user is not None:
             login(request, user)
             return redirect('/')
+        else:
+            messages.error(request, "Username or password invalid.")
     return render(request, 'signin.html')
 
 def signup(request):

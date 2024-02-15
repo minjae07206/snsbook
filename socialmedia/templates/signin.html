@@ -8,13 +8,18 @@
         <title>snsbook</title>
         <!-- Add your CSS styles or external stylesheet links here -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link rel="stylesheet" href="{% static 'styles.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/styles.css' %}">
     </head>
 <body>
     <!-- Your content goes here -->
 
     <form method="POST" action="">
         {% csrf_token %}
+        {% for message in messages %}
+        <div class="mb-3">
+            <p class="message">{{message}}</p>
+        </div>
+        {% endfor %}
         <div class="mb-3">
         <label for="username" class="form-label">Username</label>
         <input name="username" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
@@ -26,7 +31,7 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     <br/>
-    <button class="btn btn-secondary">Dont have an account? Signup up instead</button>
+    <a href="signup"><button class="btn btn-secondary">Dont have an account? Signup up instead</button></a>
     <div class="g-signin2" data-onsuccess="onSignIn"></div>
     <!-- Add your JavaScript scripts or external script links here -->
     <script src="https://apis.google.com/js/platform.js" async defer></script>
