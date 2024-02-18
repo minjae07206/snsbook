@@ -52,6 +52,9 @@ def index(request):
     
     return render(request, "index.html", {"all_posts": all_posts})
 
+def profile(request):
+    return render(request, 'profile.html')
+
 @login_required(login_url="signin")
 def create(request):
     if request.method == "POST":
